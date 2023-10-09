@@ -17,6 +17,8 @@ En esta ocasión, el bikram se dividirá en :crossed_swords: Pair Programming :c
 
 ### Dog API - Quiero un perrito, pero no se qué raza escoger, ¿me ayudas? ###
 
+Utiliza la API (https://dog.ceo/dog-api/) para resolver estos ejercicios.
+
 - [ ] 1.- Declara una funcion **getAllBreeds** que devuelva todas las razas de perro.
 
 - [ ] 2.- Declara una función **getRandomDog** que obtenga una imagen random de una raza.

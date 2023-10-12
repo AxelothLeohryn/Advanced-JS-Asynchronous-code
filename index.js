@@ -1,5 +1,7 @@
 function getAllBreeds() {
-  return fetch("https://dog.ceo/api/breeds/list/all").then((res) => res.json());
+  return fetch("https://dog.ceo/api/breeds/list/all")
+    .then((res) => res.json())
+    .then((res) => Object.keys(res.message));
 }
 
 function getRandomDog() {
@@ -25,44 +27,63 @@ function getGitHubUserProfile(username) {
     res.json()
   );
 }
+
+//6
 function printGithubUserProfile(username) {
   return fetch(`https://api.github.com/users/${username}`)
     .then((res) => res.json())
     .then((res) => {
       let img = res.avatar_url;
       let name = res.name;
-
-      console.log(img);
-      console.log();
-      let objeto = { img: { src: img }, name: name };
       let imagen = document.createElement("img");
       let usuario = document.createElement("p");
       document.body.appendChild(imagen);
       document.body.appendChild(usuario);
       imagen.src = img;
       usuario.innerHTML = name;
+      let objeto = { img: { src: img }, name: name };
       return objeto;
     });
 }
 
 function getAndPrintGitHubUserProfile(username) {
-
- return fetch(`https://api.github.com/users/${username}`)
+  return fetch(`https://api.github.com/users/${username}`)
     .then((res) => res.json())
     .then((res) => {
-     let img = res.avatar_url;
-     let name = res.name;
-     let repos = res.public_repos;
-      console.log(img, name, repos);
-
+      let img = res.avatar_url;
+      let name = res.name || res.login;
+      let repos = res.public_repos;
 
       return `<section>
-      <img src="${img}" alt="${name}">
-      <h1>${name}</h1>
-      <p>Public repos: ${repos}</p>
-  </section>`;
+                    <img src="${img}" alt="${name}">
+                    <h1>${name}</h1>
+                    <p>Public repos: ${repos}</p>
+              </section>`;
     });
-  }
+}
+//8
+let form = document.getElementById("usernameSearchForm");
+form.innerHTML = `<label for="username">Usuario de Github</label>
+                  <input type="text" id="username" name="username">
+                  <input type="submit">`;
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  getAndPrintGitHubUserProfile(event.target[0].value);
+});
 
+//9
+function fetchGithubUsers(userNames) {
+  let userNamesArray = userNames.map(function (username) {
+    return fetch(`https://api.github.com/users/${username}`)
+      .then((res) => res.json())
+      .then((res) => res.name || res.login);
+  });
+  Promise.all(userNamesArray).then((userNames) => console.log(userNames));
 
-
+  let urlsArray = userNames.map(function (username) {
+    return fetch(`https://api.github.com/users/${username}`)
+      .then((res) => res.json())
+      .then((res) => res.url);
+  });
+  Promise.all(urlsArray).then((urls) => console.log(urls));
+}
